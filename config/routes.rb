@@ -2,6 +2,17 @@ Merchcraft::Application.routes.draw do
   devise_for :users
 
   root :to => "home#index"
+  
+  resources :users do
+    member do
+        get 'wishlists'
+    end
+  end
+  
+  resources :wishlists do
+    resources :products
+  end
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
