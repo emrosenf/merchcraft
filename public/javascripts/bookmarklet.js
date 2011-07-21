@@ -3,8 +3,20 @@ var MCBookmarklet = (function(){
       var title = window.document.title;
         
       
-      title = title.split(' - ')[0];
-      title = title.split(' | ')[0];
+      s = title.split(' - ');
+      title = s[0];
+      if (s.length > 1) {
+        if (s[0].indexOf(".com") > 0) {
+            title = s[1];
+        }
+      }
+      s = title.split(' | ');
+      title = s[0];
+      if (s.length > 1) {
+        if (s[0].indexOf(".com") > 0) {
+            title = s[1];
+        }
+      }
       
       title = title.replace(/\s+/g,' ');
       title = title.replace(/^\s*|\s*$/g,'');
@@ -15,7 +27,7 @@ var MCBookmarklet = (function(){
             title = title.substr(0,idx-1);
         }
       }
-      if(document.domain.match(/amazon\.com/) && asin){
+      if(document.domain.match(/amazon\.com/)){
         var titleParts = title.split(':');
         if(titleParts[1]){
           title = titleParts[1];
@@ -68,6 +80,9 @@ var MCBookmarklet = (function(){
           return imageArray;
     };
 
+    /* consider using element.innerText, see:
+    *   http://www.newegg.com/Product/Product.aspx?Item=N82E16822136471&cm_sp=ProductSpotlight-_-22-136-471-_-07212011
+    */
     var getPrice = function() {
         var startTime = new Date().getTime();
         var nodes = [];
@@ -413,10 +428,18 @@ var MCBookmarklet = (function(){
     };
 
     window.alert(['Price: ', getPrice(), '\n', 'Title: ', getTitle(), '\n', 'Image: ', getGenericImageData()[0].src].join('\n'));
+    var ga = document.createElement("script");
+    ga.type = "text/javascript";
+    ga.async = true;
+    var base = "http://localhost:3000/wishlists/1/products/new";
+    var qs = "?title="+encodeURIComponent(getTitle())+"&image="+encodeURIComponent(getGenericImageData()[0].src)+"&price="+encodeURIComponent(getPrice())+"&url="+encodeURIComponent(window.location.href);
+    ga.src = base + qs;
+    var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
     return {
-        getTitle : getTitle,
-        getImage : function(){return getGenericImageData()[0];},
-        getPrice : getPrice
+        title : getTitle,
+        image : function(){return getGenericImageData()[0].src;},
+        price : getPrice,
+        url : function(){return window.location.href; }
     
     }
 })();
