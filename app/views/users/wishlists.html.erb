@@ -1,0 +1,8 @@
+<% if @wishlists %>
+    <h1>Wishlists</h1>
+    <ul>
+    <% @wishlists.each do |w| %>
+        <li><%= link_to w.title, wishlist_path(w.id) %></li>
+    <% end %>
+    </ul>
+<% end %>
