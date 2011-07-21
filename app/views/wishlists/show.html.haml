@@ -1,0 +1,8 @@
+%h1 Product#new
+= @w.products.count
+products
+%ul
+  - @w.products.each do |product|
+    %li
+      %img{:src => product.image, :width => 200, :height => 200}/
+      = link_to "Product: #{product.title}, price: #{product.price}", product.url

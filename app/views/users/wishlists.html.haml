@@ -1,0 +1,5 @@
+- if @wishlists
+  %h1 Wishlists
+  %ul
+    - @wishlists.each do |w|
+      %li= link_to w.title, wishlist_path(w.id)
