@@ -10,6 +10,7 @@ gem 'sqlite3'
 gem 'haml'
 gem 'sass'
 gem 'devise'
+gem 'oa-oauth', :require => "omniauth/oauth"
 
 # Use unicorn as the web server
 # gem 'unicorn'

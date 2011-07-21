@@ -1,0 +1,12 @@
+development:
+  domain: localhost:3000
+  fb_token: 190811104284157
+  fb_secret: bbf3967575173a645ac9a97b66966414
+
+test:
+  domain: test.host
+
+production:
+  domain: photoladder.com
+  fb_token: 173865629336538
+  fb_secret: bb961bb37332c956af6c4944a33100bf
