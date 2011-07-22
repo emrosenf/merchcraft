@@ -1,8 +1,15 @@
+#fb-root
+%script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
+
 %h1 Product#new
 = @w.products.count
 products
 %ul
-  - @w.products.each do |product|
-    %li
-      %img{:src => product.image, :width => 200, :height => 200}/
-      = link_to "Product: #{product.title}, price: #{product.price}", product.url
+  - products = @w.products
+  - @w.wishlist_products.each do |wp|
+    - product = products.select{ |p| wp.product_id == p.id}[0]
+    - if product != nil
+      %li
+        %img{:src => product.image, :width => 200, :height => 200}/
+        = link_to "Product: #{product.title}, price: #{product.price}", product.url
+        %fb:comments{:href => "example.com/product/#{wp.id}", :num_posts => 1, :width => 500}
