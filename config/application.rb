@@ -36,9 +36,6 @@ module Merchcraft
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
     
-    config.action_mailer.default_url_options = { :host => APP_CONFIG["domain"] }
-
-    
     config.generators do |g|
       g.template_engine :haml
     end
