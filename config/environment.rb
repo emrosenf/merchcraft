@@ -6,6 +6,8 @@ require File.expand_path('../application', __FILE__)
 raw_config = File.read("#{Rails.root}/config/app_config.yml")
 APP_CONFIG = YAML.load(raw_config)[Rails.env].symbolize_keys!
 
+config.action_mailer.default_url_options = { :host => APP_CONFIG["domain"] }
+
 # Initialize the rails application
 Merchcraft::Application.initialize!
 
