@@ -21,8 +21,11 @@ class User < ActiveRecord::Base
       user.uid = data["id"]
       user
     else # Create a user with a stub password. 
-      User.create!(:email => data["email"], :password => Devise.friendly_token[0,20],
+      user = User.create!(:email => data["email"], :password => Devise.friendly_token[0,20],
         :first_name => data["first_name"], :last_nae => data["last_name"], :avatar => access_token["user_info"]["image"], :uid => data["id"]) 
+      user.skip_confirmation!
+      user.save
+      user
     end
   end
   
