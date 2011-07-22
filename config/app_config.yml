@@ -1,5 +1,5 @@
 development:
-  domain: localhost:3000
+  domain: http://localhost:3000/
   fb_token: 125923327498317
   fb_secret: 46fc47e39a1d82e72295e7cd25666115
 
@@ -7,6 +7,6 @@ test:
   domain: test.host
 
 production:
-  domain: photoladder.com
+  domain: http://radiant-light-454.heroku.com/
   fb_token: 173865629336538
   fb_secret: bb961bb37332c956af6c4944a33100bf
