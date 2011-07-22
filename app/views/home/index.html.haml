@@ -1,2 +1,16 @@
-%h1 Home#index
-%p Find me in app/views/home/index.html.erb
+- content_for :head do
+  - ext = ".js"
+  - if File.exist?(File.join(config.javascripts_dir, controller.controller_name+ext))
+    = javascript_include_tag controller.controller_name
+  - if File.exist?(File.join(config.javascripts_dir, controller.controller_name + "." + controller.action_name+ext))
+    = javascript_include_tag (controller.controller_name + "." + controller.action_name+ext)
+%h1 Merchcraft
+
+= controller.controller_name
+
+%h2 Users
+- @users.each do |u|
+  - name = u.first_name ? u.first_name+" "+u.last_name : u.email
+  - avatar = u.avatar ||= "http://wisconsinrapidsrealestateschool.com/wp-content/themes/wisconsin/images/blank-avatar.png"
+  = link_to name, wishlists_user_path(u.id)
+  %img{:src => u.avatar}/
