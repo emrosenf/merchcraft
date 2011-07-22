@@ -1,7 +1,7 @@
 development:
   domain: localhost:3000
-  fb_token: 190811104284157
-  fb_secret: bbf3967575173a645ac9a97b66966414
+  fb_token: 125923327498317
+  fb_secret: 46fc47e39a1d82e72295e7cd25666115
 
 test:
   domain: test.host
