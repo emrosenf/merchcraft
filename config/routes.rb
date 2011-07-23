@@ -9,6 +9,12 @@ Merchcraft::Application.routes.draw do
     end
   end
   
+  
+  namespace :users do
+    get 'bookmarklet'
+    get 'confirm_bookmarklet'
+  end
+  
   resources :wishlists do
     resources :products
   end

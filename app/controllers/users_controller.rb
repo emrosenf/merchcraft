@@ -8,5 +8,15 @@ class UsersController < ApplicationController
         end
     end
   end
+  
+  def bookmarklet
+  
+  end
+  
+  def confirm_bookmarklet
+    current_user.confirmed_bookmarklet = true
+    current_user.save!
+    render :json => {:status => 1, :message => "Okay"}, :content_type => 'text/json'
+  end
 
 end
