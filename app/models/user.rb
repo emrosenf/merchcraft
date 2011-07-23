@@ -6,10 +6,21 @@ class User < ActiveRecord::Base
          :omniauthable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :confirmed_bookmarklet
   
   has_many :wishlists
   
+  protected
+    
+    # Callback to overwrite if confirmation is required or not.
+    def confirmation_required?
+      if Rails.env.development?
+        self.skip_confirmation!
+        return false
+      else
+        return !confirmed?
+      end
+    end
   
   def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
     data = access_token['extra']['user_hash']
