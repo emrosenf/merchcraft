@@ -5,6 +5,8 @@ gem 'rails', '3.0.9'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+gem 'devise_facebook_open_graph', :git => 'git://github.com/emrosenf/devise_facebook_open_graph.git'
+
 gem 'sqlite3'
 
 gem 'haml'

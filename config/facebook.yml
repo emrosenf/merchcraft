@@ -1,0 +1,13 @@
+development:
+  application_id: 125923327498317
+  api_key: 125923327498317
+  application_secret: 46fc47e39a1d82e72295e7cd25666115
+
+test:
+  domain: test.host
+
+production:
+  domain: radiant-light-454.heroku.com
+  application_id: 247609275267551
+  api_key: 247609275267551
+  applicaiton_secret: a0a9d63071f30233ab52733dd2ce14a7

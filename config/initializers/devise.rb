@@ -195,6 +195,15 @@ Devise.setup do |config|
   config.omniauth :facebook, APP_CONFIG[:fb_token], APP_CONFIG[:fb_secret],
     {:scope => 'publish_stream, offline_access, status_update, email'}
 
+
+  # devise_facebook_open_graph
+
+  config.facebook_uid_field = 'uid'
+  config.facebook_auto_create_account = false
+
+  #config.skip_confirmation_for_facebook_users = true
+
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
