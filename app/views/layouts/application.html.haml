@@ -4,6 +4,11 @@
     %title Merchcraft
     = stylesheet_link_tag :all
     = javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'
+    - ext = ".js"
+    - if File.exist?(File.join(config.javascripts_dir, controller.controller_name+ext))
+      = javascript_include_tag controller.controller_name
+    - if File.exist?(File.join(config.javascripts_dir, controller.controller_name + "." + controller.action_name+ext))
+      = javascript_include_tag controller.controller_name + "." + controller.action_name+ext
     = yield :head
     = csrf_meta_tag
   %body

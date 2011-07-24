@@ -426,15 +426,24 @@ var MCBookmarklet = (function(){
          return maxNode.price;
         }
     };
-
-    window.alert(['Price: ', getPrice(), '\n', 'Title: ', getTitle(), '\n', 'Image: ', getGenericImageData()[0].src].join('\n'));
-    var ga = document.createElement("script");
-    ga.type = "text/javascript";
-    ga.async = true;
-    var base = "http://localhost:3000/wishlists/1/products/new";
-    var qs = "?title="+encodeURIComponent(getTitle())+"&image="+encodeURIComponent(getGenericImageData()[0].src)+"&price="+encodeURIComponent(getPrice())+"&url="+encodeURIComponent(window.location.href);
-    ga.src = base + qs;
-    var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+    
+    if (document.domain == "localhost" || document.domain == "radiant-light-454.heroku.com") {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.async = true;
+        script.src = document.location.origin + "/users/confirm_bookmarklet"
+        var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(script, s);
+        
+    } else {
+        window.alert(['Price: ', getPrice(), '\n', 'Title: ', getTitle(), '\n', 'Image: ', getGenericImageData()[0].src].join('\n'));
+        var ga = document.createElement("script");
+        ga.type = "text/javascript";
+        ga.async = true;
+        var base = "http://localhost:3000/wishlists/1/products/new";
+        var qs = "?title="+encodeURIComponent(getTitle())+"&image="+encodeURIComponent(getGenericImageData()[0].src)+"&price="+encodeURIComponent(getPrice())+"&url="+encodeURIComponent(window.location.href);
+        ga.src = base + qs;
+        var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+    }
     return {
         title : getTitle,
         image : function(){return getGenericImageData()[0].src;},

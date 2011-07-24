@@ -16,7 +16,8 @@ class UsersController < ApplicationController
   def confirm_bookmarklet
     current_user.confirmed_bookmarklet = true
     current_user.save!
-    render :json => {:status => 1, :message => "Okay"}, :content_type => 'text/json'
+    render :js => "alert('bookmarklet confirmed');"
+    #render :json => {:status => 1, :message => "Okay"}, :content_type => 'text/json'
   end
 
 end

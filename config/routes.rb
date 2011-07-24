@@ -3,16 +3,19 @@ Merchcraft::Application.routes.draw do
 
   root :to => "home#index"
   
-  resources :users do
-    member do
-        get 'wishlists'
-    end
+  namespace :bookmarklet do
+    match 'frame', :via => [:get, :post]
   end
-  
   
   namespace :users do
     get 'bookmarklet'
     get 'confirm_bookmarklet'
+  end
+  
+  resources :users do
+    member do
+        get 'wishlists'
+    end
   end
   
   resources :wishlists do

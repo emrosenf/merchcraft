@@ -1,0 +1,44 @@
+- content_for :head do
+  = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"
+
+#fb-root
+:javascript 
+  window.fbAsyncInit = function() {
+    FB.init({appId: '#{APP_CONFIG[:fb_token]}', status: true, cookie: true,
+             xfbml: true});
+             
+             
+    FB.getLoginStatus(function(response) {
+      if (response.session) {
+        $(".preFBLogin").hide();
+        $(".postFBLogin").show();
+      }
+    });
+
+  
+    FB.Event.subscribe('auth.login', function(response) {
+        if (response.session) {
+          $(".preFBLogin").hide();
+          $(".postFBLogin").show();
+        }
+    });
+  };
+
+
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol +
+      '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());
+
+.preFBLogin
+  %fb:login-button{:perms => "email,offline_access,publish_stream"} Login with Facebook
+.postFBLogin{:style => "display:none;"}
+  %p you are now logged in!
+
+%h1 Merchcraft
+
+= controller.controller_name
+
+%h2 Users
