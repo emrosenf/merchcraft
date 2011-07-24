@@ -23,22 +23,45 @@
         }
     });
   };
+  
+  var imageArr = #{request.params[:images].to_json};
 
-
+  var imageCtr = 0;
   (function() {
     var e = document.createElement('script'); e.async = true;
     e.src = document.location.protocol +
       '//connect.facebook.net/en_US/all.js';
     document.getElementById('fb-root').appendChild(e);
   }());
+  
+  $(function(){
+    $('.nextBtn').click(function(){
+      imageCtr++;
+      $('#productImage').attr('src', imageArr[imageCtr]);
+    });
+  });
+
+- params = request.params
 
 .preFBLogin
   %fb:login-button{:perms => "email,offline_access,publish_stream"} Login with Facebook
 .postFBLogin{:style => "display:none;"}
   %p you are now logged in!
+  
+  
+= form_tag '/bookmarklet/submit', :method => :post do
+  %h3.item_title #{params[:title]}
+  = label_tag :price, "Price"
+  = text_field_tag :price, params[:price]
+  = check_box_tag :hasItem 
+  = label_tag :hasItem, "I have this item"
+  = check_box_tag :wantsItem
+  = label_tag :wantsItem, "I want this item"
+  %img#productImage{:src => params[:images][0], :style => "max-width:150px;"}/
+  .nextBtn
+    = link_to "Next", "#"
+  
 
 %h1 Merchcraft
 
 = controller.controller_name
-
-%h2 Users
