@@ -1,0 +1,6 @@
+cache = true
+key_id = 'AKIAJRX6FQPBLGTRK4OA'
+secret_key_id = 'KoL06NdrIxEW61oYPw9j56Pq4qBhtB90ixkunGDh'
+locale = 'us'
+encoding = 'iso-8859-15'
+style = 'json'

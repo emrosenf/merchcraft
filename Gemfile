@@ -7,6 +7,7 @@ gem 'rails', '3.0.9'
 
 gem 'devise_facebook_open_graph', :git => 'git://github.com/emrosenf/devise_facebook_open_graph.git'
 
+gem 'ruby-aaws'
 gem 'sqlite3'
 
 gem 'haml'
