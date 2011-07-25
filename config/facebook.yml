@@ -10,4 +10,4 @@ production:
   domain: radiant-light-454.heroku.com
   application_id: 247609275267551
   api_key: 247609275267551
-  applicaiton_secret: a0a9d63071f30233ab52733dd2ce14a7
+  application_secret: a0a9d63071f30233ab52733dd2ce14a7
