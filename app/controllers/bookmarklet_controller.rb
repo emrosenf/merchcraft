@@ -14,8 +14,8 @@ class BookmarkletController < ApplicationController
     if user_signed_in?
       params = request.params
       w = nil
-      if params[:new_wishlist]
-        w = Wishlist.new :title => params[:new_wishlist_title]
+      if params[:new_wishlist_title]
+        w = Wishlist.new :title => params[:new_wishlist_title], :user => current_user
       else
         w = Wishlist.find(params[:wishlist_id].to_i)
       end
