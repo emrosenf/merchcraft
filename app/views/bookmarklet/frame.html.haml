@@ -1,8 +1,37 @@
 - content_for :head do
   = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"
+  = javascript_include_tag "slides.min.jquery.js"
+  
+  :css
+    .slides_container {
+      width:470px;
+      display:none;
+    }
+    .slides_container .slide {
+      width:470px;
+      height:400px;
+      display:block;
+    }
 
 #fb-root
 :javascript 
+
+  $.fn.serializeObject = function()
+  {
+      var o = {};
+      var a = this.serializeArray();
+      $.each(a, function() {
+          if (o[this.name] !== undefined) {
+              if (!o[this.name].push) {
+                  o[this.name] = [o[this.name]];
+              }
+              o[this.name].push(this.value || '');
+          } else {
+              o[this.name] = this.value || '';
+          }
+      });
+      return o;
+  };
   window.fbAsyncInit = function() {
     FB.init({appId: '#{APP_CONFIG[:fb_token]}', status: true, cookie: true,
              xfbml: true});
@@ -39,29 +68,76 @@
       imageCtr++;
       $('#productImage').attr('src', imageArr[imageCtr]);
     });
+    
+    $('#slides').slides({
+      generatePagination: false
+    });
+    
+    $('.submit').click(function(e){
+      var data = $('#form').serializeObject();
+      if (data["hasItem"] === undefined) {
+        data["hasItem"] = 0;
+      }
+      if (data["wantsItem"] === undefined) {
+        data["wantsItem"] = 0;
+      }
+      data["image"] = $('#productImage').attr('src');
+      $.post("/bookmarklet/submit", data, function(data){
+        if (data.status == 1) {
+        }
+      });
+      return false;
+    });
   });
+  
+  var wishlists = #{@wishlists.to_json};
 
 - params = request.params
 
-.preFBLogin
-  %fb:login-button{:perms => "email,offline_access,publish_stream"} Login with Facebook
-.postFBLogin{:style => "display:none;"}
-  %p you are now logged in!
-  
-  
-= form_tag '/bookmarklet/submit', :method => :post do
-  %h3.item_title #{params[:title]}
-  = label_tag :price, "Price"
-  = text_field_tag :price, params[:price]
-  = check_box_tag :hasItem 
-  = label_tag :hasItem, "I have this item"
-  = check_box_tag :wantsItem
-  = label_tag :wantsItem, "I want this item"
-  %img#productImage{:src => params[:images][0], :style => "max-width:150px;"}/
-  .nextBtn
-    = link_to "Next", "#"
-  
-
-%h1 Merchcraft
-
-= controller.controller_name
+= form_tag '/bookmarklet/submit', :method => :post, :id => "form" do
+  = hidden_field_tag 'url', params[:url]
+  #slides
+    .slides_container
+      -#Slide 1
+      .slide          
+        %h2 Add Item to your List
+          
+        = label_tag :title, "Name"
+        = text_field_tag :title, params[:title]
+        = label_tag :price, "Price"
+        = text_field_tag :price, params[:price]
+        = check_box_tag :hasItem 
+        = label_tag :hasItem, "I have this item"
+        = check_box_tag :wantsItem
+        = label_tag :wantsItem, "I want this item"
+        %img#productImage{:src => params[:images][0], :style => "max-width:150px;"}/
+        %a.button.arrow{:href => "#"} Next Image
+          
+        %a.next.button{:href => "#"} Next
+      -#Slide 2
+      .slide
+        %select{:name => "wishlist_id"}
+          - @wishlists.each do |w|
+            %option{:value => w[:id]} #{w[:title]}
+          %option{:value => -1} New list
+            
+        .newList
+          = label_tag :new_list, "New List"
+          = text_field_tag :new_list, "Name your list", :class => "newListName"
+        
+        %h3 Share with friends?
+    
+        - if not user_signed_in?
+          .preFBLogin
+            %fb:login-button{:perms => "email,offline_access,publish_stream"} Login with Facebook
+          .postFBLogin{:style => "display:none;"}
+            %p you are now logged in!
+        %a.button.prev{:href => "#"} Previous
+        
+        %a.button.next.submit{:href => "#"} Done
+      -#Slide 3
+      .slide
+        %h2 Item Has been added to your list
+        %ul
+          %li Action 1
+          %li Action 2

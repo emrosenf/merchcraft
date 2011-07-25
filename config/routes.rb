@@ -5,6 +5,7 @@ Merchcraft::Application.routes.draw do
   
   namespace :bookmarklet do
     match 'frame', :via => [:get, :post]
+    post 'submit'
   end
   
   namespace :users do

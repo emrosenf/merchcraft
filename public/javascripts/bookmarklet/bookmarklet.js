@@ -427,7 +427,7 @@ var MCBookmarklet = (function(){
         }
     };
     
-    if (document.domain == "localhost" || document.domain == "127.0.0.1" || document.domain == "radiant-light-454.heroku.com") {
+    if (document.domain == "localhost" || document.domain == "dev.dev" || document.domain == "radiant-light-454.heroku.com") {
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.async = true;

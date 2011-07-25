@@ -1,7 +1,7 @@
 var MCBookmarklet = (function(){
 
     var dependencyState = 0;
-    var ContentRoot = "http://127.0.0.1:3000";
+    var ContentRoot = "http://dev.dev:3000";
     
     var waiter, numTries = 0;
     var setup = function() {
@@ -92,7 +92,8 @@ var MCBookmarklet = (function(){
   			    overlay: {
   				    backgroundColor: '#000',
   				    opacity: 0.5
-  			    }
+  			    },
+  			    resizable: false
   		    });
           var dialogTitle = document.getElementById("ui-dialog-title-"+d_id);
           if(null == dialogTitle || (typeof(dialogTitle) == "undefined"))
@@ -113,6 +114,7 @@ var MCBookmarklet = (function(){
       
       addInput(form, 'price', getPrice());
       addInput(form, 'title', getTitle());
+      addInput(form, 'url', document.location.href);
       
       var images = getGenericImageData();
       for (var i = 0; i < images.length; i++) {
