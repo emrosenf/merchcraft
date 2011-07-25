@@ -3,6 +3,10 @@ Merchcraft::Application.routes.draw do
 
   root :to => "home#index"
   
+  namespace :barcode do
+    get 'analyze'
+  end
+  
   namespace :bookmarklet do
     match 'frame', :via => [:get, :post]
     post 'submit'
