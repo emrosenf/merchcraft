@@ -3,15 +3,7 @@
   = javascript_include_tag "slides.min.jquery.js"
   
   :css
-    .slides_container {
-      width:470px;
-      display:none;
-    }
-    .slides_container .slide {
-      width:470px;
-      height:400px;
-      display:block;
-    }
+    .slide {width: 600px;}
 
 #fb-root
 :javascript 
@@ -69,8 +61,56 @@
       $('#productImage').attr('src', imageArr[imageCtr]);
     });
     
+    
+    $('.next').click(function(e){
+      $('#slides').slides('next');
+      e.preventDefault();
+      return false;
+    });
+    
+    $('.prev').click(function(e){
+      $('#slides').slides('previous');
+      e.preventDefault();
+      return false;
+    });
+    
+    $('#wishlist_select').change(function(e){
+      if ($(this).val() == -1) {
+          $("#newList").dialog({
+    			    title: 'New List',
+    			    width: 300,
+    			    modal: true,
+    			    zIndex: 10000000, //goes up to 2147483647, but opera/safari don't like it
+    			    overlay: {
+    				    backgroundColor: '#000',
+    				    opacity: 0.5
+    			    },
+    			    resizable: false,
+              buttons: {
+                "Create": function() {
+                  var rand = -1 * Math.floor(Math.random()*50)-2;
+                  var name = $('#newListName').val();
+                  $("<option value='"+rand+"'>"+name+"</option>").prependTo($("#wishlist_select"));
+                  $("#wishlist_select").val(rand);
+                  $("<input type='hidden' name='new_wishlist_title' value='"+name+"'></input>").prependTo("#form");
+                  $( this ).dialog( "close" );
+                  $(this).dialog("destroy");
+                },
+                "Cancel": function() {
+                 $(this).dialog("close");
+                 $(this).dialog("destroy");
+                }
+              }
+    		    });
+      }
+    });
+    
     $('#slides').slides({
-      generatePagination: false
+      pagination: false,
+      width: 600,
+      height: 400,
+      responsive: true,
+      navigation: false
     });
     
     $('.submit').click(function(e){
@@ -84,6 +124,7 @@
       data["image"] = $('#productImage').attr('src');
       $.post("/bookmarklet/submit", data, function(data){
         if (data.status == 1) {
+          $("#slides").slides("next");
         }
       });
       return false;
@@ -97,47 +138,46 @@
 = form_tag '/bookmarklet/submit', :method => :post, :id => "form" do
   = hidden_field_tag 'url', params[:url]
   #slides
-    .slides_container
-      -#Slide 1
-      .slide          
-        %h2 Add Item to your List
-          
-        = label_tag :title, "Name"
-        = text_field_tag :title, params[:title]
-        = label_tag :price, "Price"
-        = text_field_tag :price, params[:price]
-        = check_box_tag :hasItem 
-        = label_tag :hasItem, "I have this item"
-        = check_box_tag :wantsItem
-        = label_tag :wantsItem, "I want this item"
-        %img#productImage{:src => params[:images][0], :style => "max-width:150px;"}/
-        %a.button.arrow{:href => "#"} Next Image
-          
-        %a.next.button{:href => "#"} Next
-      -#Slide 2
-      .slide
-        %select{:name => "wishlist_id"}
-          - @wishlists.each do |w|
-            %option{:value => w[:id]} #{w[:title]}
-          %option{:value => -1} New list
-            
-        .newList
-          = label_tag :new_list, "New List"
-          = text_field_tag :new_list, "Name your list", :class => "newListName"
+    -#Slide 1
+    .slide    
+      %h2 Add Item to your List
         
-        %h3 Share with friends?
-    
-        - if not user_signed_in?
-          .preFBLogin
-            %fb:login-button{:perms => "email,offline_access,publish_stream"} Login with Facebook
-          .postFBLogin{:style => "display:none;"}
-            %p you are now logged in!
-        %a.button.prev{:href => "#"} Previous
+      = label_tag :title, "Name"
+      = text_field_tag :title, params[:title]
+      = label_tag :price, "Price"
+      = text_field_tag :price, params[:price]
+      = check_box_tag :hasItem 
+      = label_tag :hasItem, "I have this item"
+      = check_box_tag :wantsItem
+      = label_tag :wantsItem, "I want this item"
+      %img#productImage{:src => params[:images][0], :style => "max-width:150px;"}/
+      %a.button.arrow{:href => "#"} Next Image
         
-        %a.button.next.submit{:href => "#"} Done
-      -#Slide 3
-      .slide
-        %h2 Item Has been added to your list
-        %ul
-          %li Action 1
-          %li Action 2
+      %a.next.button{:href => "#"} Next
+    -#Slide 2
+    .slide
+      %select#wishlist_select{:name => "wishlist_id"}
+        - @wishlists.each do |w|
+          %option{:value => w[:id]} #{w[:title]}
+        %option{:value => -1} New list
+          
+      #newList{:style => "display:none"}
+        = label_tag :new_list, "New List"
+        = text_field_tag :new_list, "Name your list", :id => "newListName"
+      
+      %h3 Share with friends?
+  
+      - if not user_signed_in?
+        .preFBLogin
+          %fb:login-button{:perms => "email,offline_access,publish_stream"} Login with Facebook
+        .postFBLogin{:style => "display:none;"}
+          %p you are now logged in!
+      %a.button.prev{:href => "#"} Previous
+      
+      %a.button.submit{:href => "#"} Done
+    -#Slide 3
+    .slide
+      %h2 Item Has been added to your list
+      %ul
+        %li Action 1
+        %li Action 2
